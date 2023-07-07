@@ -1,0 +1,16 @@
+---
+
+- name: Upload origin cloudflare certificate
+  ansible.builtin.copy:
+    src: "{{ LOCAL_CERTIFICATE_DIRECTORY }}/{{ CERTIFICATE_NAME }}"
+    dest: "{{ REMOTE_CERTIFICATE_DIRECTORY }}/{{ CERTIFICATE_NAME }}"
+    owner: "root"
+    group: "root"
+    mode: '0644'
+- name: Upload origin cloudflare key
+  ansible.builtin.copy:
+    src: "{{ LOCAL_CERTIFICATE_DIRECTORY }}/{{ KEY_NAME }}"
+    dest: "{{ REMOTE_CERTIFICATE_DIRECTORY }}/{{ KEY_NAME }}"
+    owner: "root"
+    group: "root"
+    mode: '0600'

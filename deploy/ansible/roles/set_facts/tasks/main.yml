@@ -1,0 +1,20 @@
+- name: Evaluate correct ssh key path (rsync fix)
+  set_fact: 
+    ansible_ssh_private_key: "{{ ansible_ssh_private_key }}"
+  when: ansible_ssh_private_key is defined
+- name: Set name of local and remote project directory
+  set_fact:
+    LOCAL_PROJECT_DIRECTORY: "{{ playbook_dir }}/../.."
+    REMOTE_PROJECT_DIRECTORY: "{{ ansible_env.HOME }}/{{ hostvars['srv'].deploy_root }}"
+    LOCAL_BUILD_DIRECTORY: "ElympicsShooter/Builds/WebGL/ShooterTemplate"
+    COMMIT_REF_SLUG: "{{ lookup('env', 'CI_COMMIT_REF_SLUG') }}"
+    REMOTE_PROJECT_PATH: "{{ lookup('env', 'CI_REMOTE_PROJECT_PATH') | default('', False) }}"
+    LOCAL_CERTIFICATE_DIRECTORY: "{{ playbook_dir }}/../infra/outputs/"
+    LOCAL_NGINX_DIRECTORY: "{{ playbook_dir }}/../nginx"
+    CERTIFICATE_NAME: "{{ deploy_domain }}.crt"
+    KEY_NAME: "{{ deploy_domain }}.key"
+    REMOTE_CERTIFICATE_DIRECTORY: "{{ certificate_directory }}"
+    REMOTE_SITES_AVAILABLE_DIRECTORY: "{{ sites_available_directory }}"
+    REMOTE_SITES_ENABLED_DIRECTORY: "{{ sites_enabled_directory }}"
+    LOCAL_NGINX_FILENAME: "nginx"
+    REMOTE_NGINX_FILENAME: "{{ nginx_filename }}"

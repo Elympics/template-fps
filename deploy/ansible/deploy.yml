@@ -1,0 +1,16 @@
+- hosts: all
+  gather_facts: yes
+  tasks:
+    - debug:
+        msg: "SSH user: {{ ansible_user }}"
+
+- hosts: all
+  gather_facts: yes
+  roles:
+    - set_facts
+
+- hosts: all
+  gather_facts: yes
+  roles:
+    - delete
+    - upload

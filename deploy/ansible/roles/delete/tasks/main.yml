@@ -1,0 +1,5 @@
+- name: Delete file
+  ansible.builtin.file:
+    path: "{{ REMOTE_PROJECT_DIRECTORY }}/{{ REMOTE_PROJECT_PATH }}/"
+    state: absent
+  when: REMOTE_PROJECT_PATH | trim != ''

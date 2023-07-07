@@ -1,0 +1,20 @@
+---
+
+- name: Upload nginx config
+  ansible.builtin.copy:
+    src: "{{ LOCAL_NGINX_DIRECTORY }}/{{ LOCAL_NGINX_FILENAME }}"
+    dest: "{{ REMOTE_SITES_AVAILABLE_DIRECTORY }}/{{ REMOTE_NGINX_FILENAME }}"
+    owner: "root"
+    group: "root"
+    mode: '0644'
+- name: Create nginx link
+  ansible.builtin.file:
+    src: "{{ REMOTE_SITES_AVAILABLE_DIRECTORY }}/{{ REMOTE_NGINX_FILENAME }}"
+    dest: "{{ REMOTE_SITES_ENABLED_DIRECTORY }}/{{ REMOTE_NGINX_FILENAME }}"
+    owner: "root"
+    group: "root"
+    state: link
+- name: Reload service nginx, in all cases
+  ansible.builtin.service:
+    name: nginx
+    state: reloaded

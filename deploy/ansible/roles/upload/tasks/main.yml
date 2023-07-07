@@ -1,0 +1,8 @@
+- name: Copy file to predefined directory
+  ansible.builtin.copy:
+    src: "{{ LOCAL_PROJECT_DIRECTORY }}/{{ LOCAL_BUILD_DIRECTORY }}/"
+    dest: "{{ REMOTE_PROJECT_DIRECTORY }}/{{ REMOTE_PROJECT_PATH }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0666'
+  when: REMOTE_PROJECT_PATH | trim != ''
