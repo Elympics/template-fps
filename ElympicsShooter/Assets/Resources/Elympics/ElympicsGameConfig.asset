@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3718fdc79f884b648722df4e56317063, type: 3}
+  m_Name: ElympicsGameConfig
+  m_EditorClassIdentifier: 
+  gameName: ElympicsShooter
+  gameId: eae33548-47fd-4bfb-bf15-c516056818e0
+  gameVersion: 88.30
+  players: 2
+  gameplayScene: Assets/Scenes/GameplayScene.unity
+  gameplaySceneAsset: {fileID: 102900000, guid: 633b18d8778df5d46a410651e5884f34, type: 3}
+  botsInServer: 1
+  useWeb: 0
+  legacyMatchmakingClient: 0
+  enableReconnect: 0
+  connectionConfig:
+    sessionConnectTimeout: 15
+    synchronizerTimeout: 20
+    minContinuousSynchronizationInterval: 0.1
+    unreliablePingTimeout: 5
+    webRtcOfferTimeout: 5
+    webRtcOfferMaxRetries: 5
+    webRtcOfferRetryDelay: 1
+    initialSynchronizeMaxRetries: 3
+  ticksPerSecond: 50
+  snapshotSendingPeriodInTicks: 1
+  inputLagTicks: 3
+  maxAllowedLagInTicks: 25
+  prediction: 1
+  predictionLimitInTicks: 25
+  detailedNetworkLog: 0
+  mode: 2
+  halfRemoteMode: 0
+  useWebInHalfRemote: 0
+  ipForHalfRemoteMode: 127.0.0.1
+  tcpPortForHalfRemoteMode: 9101
+  webPortForHalfRemoteMode: 9102
+  playerIndexForHalfRemoteMode: 1
+  testMatchData:
+    queueName: 
+    regionName: 
+  testPlayers:
+  - userId: 0
+    isBot: 0
+    botDifficulty: 0
+    gameEngineData: 
+    matchmakerData: []
+  - userId: 1
+    isBot: 0
+    botDifficulty: 0
+    gameEngineData: 
+    matchmakerData: []

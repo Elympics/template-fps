@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 918e795896f4bd847880bf8b207be38e
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Varta
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 915d87c97042be94995c260cf8b37824, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
