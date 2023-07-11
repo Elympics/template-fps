@@ -2,8 +2,11 @@
 ![Elympics 0.7.0 badge](https://img.shields.io/badge/Elympics-0.7.0-white)
 ![ruby 2.7.2 badge](https://img.shields.io/badge/ruby-2.7.2-red)
 
-![Elympics](https://static.elympics.cc/assets/logo/elympics-light.png#gh-dark-mode-only)
-![Elympics](https://static.elympics.cc/assets/logo/elympics-dark.png#gh-light-mode-only)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://static.elympics.cc/assets/logo/elympics-light.png">
+  <img alt="Elympics" src="https://static.elympics.cc/assets/logo/elympics-dark.png">
+</picture>
+
 
 # Open-source FPS template by Elympics
 
