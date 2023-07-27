@@ -1,5 +1,5 @@
 ![Unity 2021.3.5f1 badge](https://img.shields.io/badge/Unity-2021.3.5f1-blue)
-![Elympics 0.7.0 badge](https://img.shields.io/badge/Elympics-0.7.0-white)
+![Elympics 0.7.0 badge](https://img.shields.io/badge/Elympics-0.8.1-white)
 ![ruby 2.7.2 badge](https://img.shields.io/badge/ruby-2.7.2-red)
 
 ![Elympics](https://static.elympics.cc/assets/logo/elympics-light.png#gh-dark-mode-only)

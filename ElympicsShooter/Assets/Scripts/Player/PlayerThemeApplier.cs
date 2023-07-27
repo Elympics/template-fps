@@ -1,24 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerData))]
 public class PlayerThemeApplier : MonoBehaviour
 {
-	[SerializeField] private SkinnedMeshRenderer[] themeBasedRenderers = null;
-	[SerializeField] private SkinnedMeshRenderer[] themeBasedMetallicRenderers = null;
+    [SerializeField] private SkinnedMeshRenderer fppThemeBasedRenderer = null;
+    [SerializeField] private SkinnedMeshRenderer fppThemeBasedMetallicRenderer = null;
+    [SerializeField] private SkinnedMeshRenderer tppMeshRenderer = null;
 
-	private void Awake()
-	{
-		var playerData = GetComponent<PlayerData>();
+    private void Awake()
+    {
+        var playerData = GetComponent<PlayerData>();
 
-		ApplyTheme(playerData.ThemeMaterial, themeBasedRenderers);
-		ApplyTheme(playerData.ThemeMaterialMetallic, themeBasedMetallicRenderers);
-	}
+        fppThemeBasedRenderer.material = playerData.ThemeMaterial;
+        fppThemeBasedMetallicRenderer.material = playerData.ThemeMaterialMetallic;
 
-	private void ApplyTheme(Material themeMaterial, SkinnedMeshRenderer[] renderers)
-	{
-		foreach (SkinnedMeshRenderer themeBasedRenderer in renderers)
-			themeBasedRenderer.material = themeMaterial;
-	}
+        tppMeshRenderer.materials = new Material[] { playerData.ThemeMaterial, playerData.ThemeMaterialMetallic, tppMeshRenderer.materials[2] };
+    }
 }

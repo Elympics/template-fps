@@ -11,6 +11,11 @@ public class DeathController : ElympicsMonoBehaviour, IUpdatable, IInitializable
     [SerializeField] private GameStateController gameStateController = null;
     [SerializeField] private Collider[] playerColliders = null;
     [SerializeField] private Rigidbody playerRigidbody = null;
+    [SerializeField] private Transform playerRig = null;
+    [SerializeField] private Animator animator = null;
+
+    private Collider[] rigColliders;
+    private Rigidbody[] rigRigidbodies;
 
     public ElympicsBool IsDead { get; } = new ElympicsBool(false);
     public ElympicsFloat CurrentDeathTime { get; } = new ElympicsFloat(0.0f);
@@ -26,6 +31,11 @@ public class DeathController : ElympicsMonoBehaviour, IUpdatable, IInitializable
     {
         playerData = GetComponent<PlayerData>();
         IsDead.ValueChanged += HandleAfterlifePhysics;
+
+        // ragdoll setup
+        rigColliders = playerRig.GetComponentsInChildren<Collider>();
+        rigRigidbodies = playerRig.GetComponentsInChildren<Rigidbody>();
+        SetRagdollState(false);
     }
 
     private void HandleAfterlifePhysics(bool lastValue, bool newValue)
@@ -37,6 +47,8 @@ public class DeathController : ElympicsMonoBehaviour, IUpdatable, IInitializable
         {
             collider.enabled = !newValue;
         }
+
+        SetRagdollState(newValue);
     }
 
     public void ProcessPlayersDeath(int damageOwner)
@@ -70,5 +82,20 @@ public class DeathController : ElympicsMonoBehaviour, IUpdatable, IInitializable
         PlayerRespawned?.Invoke();
         IsDead.Value = false;
         KillerId.Value = -1;
+    }
+
+    private void SetRagdollState(bool state)
+    {
+        foreach (var collider in rigColliders)
+        {
+            collider.enabled = state;
+        }
+
+        foreach (var rb in rigRigidbodies)
+        {
+            rb.isKinematic = !state;
+        }
+
+        animator.enabled = !state;
     }
 }
