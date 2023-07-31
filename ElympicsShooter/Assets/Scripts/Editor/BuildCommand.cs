@@ -187,12 +187,14 @@ static class BuildCommand
 
         SetScriptingBackendFromEnv(buildTarget);
 
+        var version = BuildGameVersionAdjuster.AdjustGameVersion();
+
         var buildReport = BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, buildTarget, buildOptions);
 
         if (buildReport.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
             throw new Exception($"Build ended with {buildReport.summary.result} status");
 
-        Console.WriteLine(":: Done with build");
+        Console.WriteLine($":: Done with build for version >>> {version} <<<");
     }
 
     private static void HandleAndroidAppBundle()
