@@ -128,6 +128,7 @@ get-activation-file:
 build:server:
   stage: build
   <<: *unity_defaults
+  image: $IMAGE:$UNITY_VERSION-linux-il2cpp-$IMAGE_VERSION
   script:
     - chmod +x ./ci/build_and_upload_to_elympics.sh && ./ci/build_and_upload_to_elympics.sh
   extends:
