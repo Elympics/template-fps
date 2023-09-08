@@ -11,7 +11,7 @@ public class ViewController : MonoBehaviour
 
 	public void ProcessView(Quaternion mouseRotation)
 	{
-		if (deathController.IsDead)
+		if (deathController.IsDead.Value)
 			return;
 
 		horizontalRotationTarget.localRotation = Quaternion.Euler(0, mouseRotation.eulerAngles.y, 0);

@@ -15,15 +15,18 @@ public class ScoreboardPlayerCard : MonoBehaviour
 
 	public int PlayerScore { get; private set; } = -1;
 
-	public void Initialize(PlayerData assignedPlayerData, ElympicsInt playerScore, Action OnPlayerScoreChanged)
+	public void Initialize(PlayerData assignedPlayerData,
+		ElympicsInt playerScore,
+		Action OnPlayerScoreChanged)
 	{
 		SetupView(assignedPlayerData);
 
-		playerScore.ValueChanged += (int lastValue, int newValue) =>
-			{
-				UpdateScoreView(newValue);
-				OnPlayerScoreChanged();
-			};
+		playerScore.ValueChanged += (int lastValue,
+			int newValue) =>
+		{
+			UpdateScoreView(newValue);
+			OnPlayerScoreChanged();
+		};
 	}
 
 	private void UpdateScoreView(int newValue)

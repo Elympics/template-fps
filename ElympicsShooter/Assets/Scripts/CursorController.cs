@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class CursorController : MonoBehaviour
@@ -14,14 +15,16 @@ public class CursorController : MonoBehaviour
 		gameStateController.CurrentGameState.ValueChanged += SetCursorLockBasedOnCurrentGameState;
 	}
 
-	private void SetCursorLockBasedOnCurrentGameState(int lastValue, int newValue)
+	private void SetCursorLockBasedOnCurrentGameState(int lastValue,
+		int newValue)
 	{
 		bool cursorLockState = (GameState)newValue != GameState.MatchEnded;
 
 		SetCursorLock(cursorLockState);
 	}
 
-	private void SetCursorLock(bool cursorLock)
+	[UsedImplicitly]
+	public void SetCursorLock(bool cursorLock)
 	{
 		if (cursorLock)
 		{

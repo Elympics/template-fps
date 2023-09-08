@@ -6,6 +6,7 @@ using System;
 
 public class PlayerScoresManager : ElympicsMonoBehaviour, IInitializable
 {
+	[SerializeField] private KillLog killLog;
 	[SerializeField] private PlayersProvider playersProvider = null;
 	[SerializeField] private int pointsRequiredToWin = 10;
 
@@ -43,7 +44,8 @@ public class PlayerScoresManager : ElympicsMonoBehaviour, IInitializable
 		}
 	}
 
-	private void ProcessPlayerDeath(int victim, int killer)
+	private void ProcessPlayerDeath(int victim,
+		int killer)
 	{
 		//If player killed himself subtract one point
 		if (victim == killer)
@@ -52,8 +54,14 @@ public class PlayerScoresManager : ElympicsMonoBehaviour, IInitializable
 		else
 			playerScores.Values[killer].Value++;
 
+		if (!Elympics.IsServer)
+			return;
+
+		killLog.SetupKillLog(playersProvider.AllPlayersInScene[killer].Nickname,
+			playersProvider.AllPlayersInScene[victim].Nickname);
+
 		//Check if points required to win reached
-		if (Elympics.IsServer && playerScores.Values[killer].Value >= pointsRequiredToWin)
+		if (playerScores.Values[killer].Value >= pointsRequiredToWin)
 		{
 			WinnerPlayerId.Value = killer;
 		}
@@ -77,5 +85,4 @@ public class PlayerScoresManager : ElympicsMonoBehaviour, IInitializable
 	{
 		return playerScores.Values[playerId];
 	}
-
 }

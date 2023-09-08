@@ -17,12 +17,12 @@ public class PlayerThirdPersonAnimatorWeaponsController : MonoBehaviour
 	{
 		currentActiveAssignedWeapon = assignedWeapons[0];
 
-		loadoutController.CurrentEquipedWeaponIndex.ValueChanged += OnWeaponSwap;
+		loadoutController.CurrentEquippedWeaponIndex.ValueChanged += OnWeaponSwap;
 	}
 
-	private void OnWeaponSwap(int lastValue, int newValue)
+	private void OnWeaponSwap(int lastValue,
+		int newValue)
 	{
-		Debug.Log("On weapon swap " + newValue);
 		currentActiveAssignedWeapon.SetActive(false);
 
 		thirdPersonAnimator.SetTrigger(SwapWeaponTrigger);

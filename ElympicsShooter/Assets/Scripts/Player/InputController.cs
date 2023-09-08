@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Elympics;
-using System;
 
 [RequireComponent(typeof(InputProvider))]
 public class InputController : ElympicsMonoBehaviour, IInputHandler, IInitializable, IUpdatable
@@ -16,23 +13,24 @@ public class InputController : ElympicsMonoBehaviour, IInputHandler, IInitializa
 
 	private InputProvider inputProvider = null;
 	private bool canProcessInputs = true;
+	private int previousGameState = -1;
 
 	public void Initialize()
 	{
 		this.inputProvider = GetComponent<InputProvider>();
-
-		UpdateProcessInputsBasedOnCurrentGameState(gameController.CurrentGameState, gameController.CurrentGameState);
-		gameController.CurrentGameState.ValueChanged += UpdateProcessInputsBasedOnCurrentGameState;
 	}
 
-	private void UpdateProcessInputsBasedOnCurrentGameState(int lastGameState, int newGameState)
+	private void UpdateProcessInputsBasedOnCurrentGameState(int newGameState)
 	{
+		if (previousGameState == newGameState)
+			return;
+
+		previousGameState = newGameState;
 		canProcessInputs = (GameState)newGameState == GameState.GameplayMatchRunning;
 	}
 
 	public void OnInputForBot(IInputWriter inputSerializer)
 	{
-		// TODO
 	}
 
 	public void OnInputForClient(IInputWriter inputSerializer)
@@ -61,13 +59,20 @@ public class InputController : ElympicsMonoBehaviour, IInputHandler, IInitializa
 
 	public void ElympicsUpdate()
 	{
+		UpdateProcessInputsBasedOnCurrentGameState(gameController.CurrentGameState.Value);
+
+		HandleInput();
+	}
+
+	private void HandleInput()
+	{
 		float forwardMovement = 0.0f;
 		float rightMovement = 0.0f;
 		bool jump = false;
 
-		if (canProcessInputs && ElympicsBehaviour.TryGetInput(ElympicsPlayer.FromIndex(playerData.PlayerId), out var inputDeserializer))
+		if (canProcessInputs &&
+		    ElympicsBehaviour.TryGetInput(ElympicsPlayer.FromIndex(playerData.PlayerId), out var inputDeserializer))
 		{
-
 			inputDeserializer.Read(out forwardMovement);
 			inputDeserializer.Read(out rightMovement);
 
@@ -100,12 +105,15 @@ public class InputController : ElympicsMonoBehaviour, IInputHandler, IInitializa
 		viewController.ProcessView(mouseRotation);
 	}
 
-	private void ProcessLoadoutActions(bool weaponPrimaryAction, int weaponSlot)
+	private void ProcessLoadoutActions(bool weaponPrimaryAction,
+		int weaponSlot)
 	{
 		loadoutController.ProcessLoadoutActions(weaponPrimaryAction, weaponSlot);
 	}
 
-	private void ProcessMovement(float forwardMovement, float rightMovement, bool jump)
+	private void ProcessMovement(float forwardMovement,
+		float rightMovement,
+		bool jump)
 	{
 		movementController.ProcessMovement(forwardMovement, rightMovement, jump);
 	}

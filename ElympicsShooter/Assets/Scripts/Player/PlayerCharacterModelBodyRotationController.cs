@@ -12,7 +12,7 @@ public class PlayerCharacterModelBodyRotationController : ElympicsMonoBehaviour
 
 	public void LateUpdate()
 	{
-		if (!deathController.IsDead)
+		if (!deathController.IsDead.Value)
 			rotatingBone.transform.LookAt(lookAtTarget);
 	}
 }

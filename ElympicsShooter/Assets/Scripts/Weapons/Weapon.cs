@@ -16,7 +16,7 @@ public abstract class Weapon : ElympicsMonoBehaviour, IInitializable, IUpdatable
 	protected float timeBetweenShoots = 0.0f;
 	public float TimeBetweenShoots => timeBetweenShoots;
 
-	protected bool IsReady => currentTimeBetweenShoots >= timeBetweenShoots;
+	protected bool IsReady => currentTimeBetweenShoots.Value >= timeBetweenShoots;
 
 	public GameObject Owner => this.transform.root.gameObject;
 

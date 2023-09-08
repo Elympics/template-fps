@@ -10,7 +10,7 @@ public class PlayerRenderersVisibilityController : ElympicsMonoBehaviour, IIniti
 	[SerializeField] private GameObject[] firstPersonRendererRoots = null;
 	[SerializeField] private GameObject[] thirdPersonRendererRoots = null;
 
-	[Header("Invisibe layer:")]
+	[Header("Invisible layer:")]
 	[SerializeField] private string defaultLayerName = null;
 	[SerializeField] private string invisibleLayerName = null;
 
@@ -25,19 +25,23 @@ public class PlayerRenderersVisibilityController : ElympicsMonoBehaviour, IIniti
 		}
 	}
 
-	private void ProcessRootsOfRenderersToSetGivenLayer(GameObject[] rootsOfRenderersToDisable, string layerName)
+	private void ProcessRootsOfRenderersToSetGivenLayer(GameObject[] rootsOfRenderersToDisable,
+		string layerName)
 	{
 		foreach (GameObject rootOfRenderersToDisable in rootsOfRenderersToDisable)
 		{
-			var rendererObjectsInChildren = Array.ConvertAll(rootOfRenderersToDisable.GetComponentsInChildren<Renderer>(true), x => x.gameObject);
+			var rendererObjectsInChildren =
+				Array.ConvertAll(rootOfRenderersToDisable.GetComponentsInChildren<Renderer>(true), x => x.gameObject);
 			SetGivenObjectsLayer(rendererObjectsInChildren, layerName);
 
-			rendererObjectsInChildren = Array.ConvertAll(rootOfRenderersToDisable.GetComponentsInChildren<Graphic>(true), x => x.gameObject);
+			rendererObjectsInChildren =
+				Array.ConvertAll(rootOfRenderersToDisable.GetComponentsInChildren<Graphic>(true), x => x.gameObject);
 			SetGivenObjectsLayer(rendererObjectsInChildren, layerName);
 		}
 	}
 
-	private void SetGivenObjectsLayer(GameObject[] objectsToChangeLayer, string layerName)
+	private void SetGivenObjectsLayer(GameObject[] objectsToChangeLayer,
+		string layerName)
 	{
 		foreach (GameObject objectToChangeLayer in objectsToChangeLayer)
 		{

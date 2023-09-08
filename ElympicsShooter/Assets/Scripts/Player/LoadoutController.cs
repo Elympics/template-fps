@@ -8,24 +8,23 @@ public class LoadoutController : ElympicsMonoBehaviour, IInitializable, IUpdatab
 {
 	[Header("References:")]
 	[SerializeField] private DeathController deathController = null;
+
 	[SerializeField] private Weapon[] availableWeapons = null;
 
 	[Header("Parameters:")]
 	[SerializeField] private float weaponSwapTime = 0.3f;
 
-	public ElympicsInt CurrentEquipedWeaponIndex { get; } = new ElympicsInt(0);
+	public ElympicsInt CurrentEquippedWeaponIndex { get; } = new ElympicsInt(0);
 
 	private ElympicsFloat currentWeaponSwapTime = null;
-	private Weapon currentEquipedWeapon = null;
+	private Weapon currentEquippedWeapon = null;
+	private int previousWeaponValue = -1;
 
 	public void Initialize()
 	{
 		currentWeaponSwapTime = new ElympicsFloat(weaponSwapTime);
 
 		DisableAllWeapons();
-
-		CurrentEquipedWeaponIndex.ValueChanged += UpdateCurrentEquipedWeaponByIndex;
-		UpdateCurrentEquipedWeaponByIndex(CurrentEquipedWeaponIndex, 0);
 	}
 
 	private void DisableAllWeapons()
@@ -34,12 +33,13 @@ public class LoadoutController : ElympicsMonoBehaviour, IInitializable, IUpdatab
 			weapon.SetIsActive(false);
 	}
 
-	public void ProcessLoadoutActions(bool weaponPrimaryAction, int weaponIndex)
+	public void ProcessLoadoutActions(bool weaponPrimaryAction,
+		int weaponIndex)
 	{
-		if (deathController.IsDead)
+		if (deathController.IsDead.Value)
 			return;
 
-		if (weaponIndex != -1 && weaponIndex != CurrentEquipedWeaponIndex)
+		if (weaponIndex != -1 && weaponIndex != CurrentEquippedWeaponIndex.Value)
 		{
 			SwitchWeapon(weaponIndex);
 		}
@@ -58,28 +58,35 @@ public class LoadoutController : ElympicsMonoBehaviour, IInitializable, IUpdatab
 
 	private void ProcessWeaponPrimaryAction()
 	{
-		currentEquipedWeapon.ExecutePrimaryAction();
+		currentEquippedWeapon.ExecutePrimaryAction();
 	}
 
 	public void SwitchWeapon(int weaponIndex)
 	{
-		CurrentEquipedWeaponIndex.Value = weaponIndex;
+		CurrentEquippedWeaponIndex.Value = weaponIndex;
 	}
 
-	private void UpdateCurrentEquipedWeaponByIndex(int lastValue, int newValue)
+	private void UpdateCurrentEquippedWeaponByIndex(int value)
 	{
-		if (currentEquipedWeapon != null)
-			currentEquipedWeapon.SetIsActive(false);
+		if (previousWeaponValue == value)
+			return;
 
-		currentEquipedWeapon = availableWeapons[newValue];
-		currentEquipedWeapon.SetIsActive(true);
+		previousWeaponValue = value;
+
+		if (currentEquippedWeapon != null)
+			currentEquippedWeapon.SetIsActive(false);
+
+		currentEquippedWeapon = availableWeapons[value];
+		currentEquippedWeapon.SetIsActive(true);
 
 		currentWeaponSwapTime.Value = 0.0f;
 	}
 
 	public void ElympicsUpdate()
 	{
-		if (currentWeaponSwapTime < weaponSwapTime)
+		UpdateCurrentEquippedWeaponByIndex(CurrentEquippedWeaponIndex.Value);
+
+		if (currentWeaponSwapTime.Value < weaponSwapTime)
 			currentWeaponSwapTime.Value += Elympics.TickDuration;
 	}
 }

@@ -57,9 +57,11 @@ public class ExplosionArea : ElympicsMonoBehaviour
 
 	private bool TargetIsNotBehindObstacle(GameObject objectInExplosionRange)
 	{
-		var directionToObjectInExplosionRange = (objectInExplosionRange.transform.position - this.transform.position).normalized;
+		var directionToObjectInExplosionRange =
+			(objectInExplosionRange.transform.position - this.transform.position).normalized;
 
-		if (Physics.Raycast(this.transform.position, directionToObjectInExplosionRange, out RaycastHit hit, explosionRange))
+		if (Physics.Raycast(this.transform.position, directionToObjectInExplosionRange, out RaycastHit hit,
+			    explosionRange))
 		{
 			Debug.Log("I hit " + hit.transform.gameObject.name);
 			return hit.transform.gameObject == objectInExplosionRange;

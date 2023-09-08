@@ -41,7 +41,7 @@ public class Scoreboard : MonoBehaviour
 
 	private void SetScoreboardDisplayStatus(bool showScoreboard)
 	{
-		canvasGroup.alpha = showScoreboard ? 1.0f: 0.0f;
+		canvasGroup.alpha = showScoreboard ? 1.0f : 0.0f;
 	}
 
 	private void SubscribeToPlayerScoreManager()
@@ -51,7 +51,8 @@ public class Scoreboard : MonoBehaviour
 		playerScoresManager.WinnerPlayerId.ValueChanged += OnWinnerPlayerIdSet;
 	}
 
-	private void OnWinnerPlayerIdSet(int lastValue, int newValue)
+	private void OnWinnerPlayerIdSet(int lastValue,
+		int newValue)
 	{
 		if (newValue < 0)
 			return;
@@ -68,7 +69,8 @@ public class Scoreboard : MonoBehaviour
 		foreach (PlayerData playerData in playersProvider.AllPlayersInScene)
 		{
 			var createdCard = Instantiate(scoreboardPlayerCardPrefab, cardsContainer);
-			createdCard.Initialize(playerData, playerScoresManager.GetScoreForPlayer(playerData.PlayerId), RefreshOrderOfScoreboardPlayerCard);
+			createdCard.Initialize(playerData, playerScoresManager.GetScoreForPlayer(playerData.PlayerId),
+				RefreshOrderOfScoreboardPlayerCard);
 
 			createdScoreboardPlayerCards.Add(createdCard);
 		}

@@ -24,4 +24,6 @@ public class PlayerData : MonoBehaviour
 	public DeathController DeathController => deathController;
 	public StatsController StatsController => statsController;
 	public LoadoutController LoadoutController => loadoutController;
+
+	public void SetNickname(string nickname) => this.nickname = nickname;
 }

@@ -14,7 +14,8 @@ public class GameOverScreenViewController : MonoBehaviour
 	{
 		canvasGroup.alpha = 1.0f;
 
-		winnerInfoText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(winnerData.ThemeColor)}>Player {winnerData.PlayerId}</color> won the game!";
+		winnerInfoText.text =
+			$"<color=#{ColorUtility.ToHtmlStringRGB(winnerData.ThemeColor)}>Player {winnerData.PlayerId}</color> won the game!";
 	}
 
 	public void OnBackToMenuClicked()

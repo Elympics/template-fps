@@ -23,7 +23,8 @@ public class DeathScreen : MonoBehaviour
 		gameStateController.CurrentGameState.ValueChanged += ProcessLockDisplayingDeathScreenBasedOnCurrentGameState;
 	}
 
-	private void ProcessLockDisplayingDeathScreenBasedOnCurrentGameState(int lastValue, int newValue)
+	private void ProcessLockDisplayingDeathScreenBasedOnCurrentGameState(int lastValue,
+		int newValue)
 	{
 		if ((GameState)newValue == GameState.MatchEnded)
 		{
@@ -40,7 +41,8 @@ public class DeathScreen : MonoBehaviour
 		clientPlayerData.DeathController.IsDead.ValueChanged += UpdateDeathScreenView;
 	}
 
-	private void UpdateDeathScreenView(bool lastValue, bool newValue)
+	private void UpdateDeathScreenView(bool lastValue,
+		bool newValue)
 	{
 		if (displayingDeathScreenDisabled)
 			return;
@@ -48,7 +50,8 @@ public class DeathScreen : MonoBehaviour
 		canvasGroup.alpha = newValue ? 1.0f : 0.0f;
 	}
 
-	private void UpdateDeathTimerView(float lastValue, float newValue)
+	private void UpdateDeathTimerView(float lastValue,
+		float newValue)
 	{
 		deathTimerText.text = Mathf.Ceil(newValue).ToString();
 	}

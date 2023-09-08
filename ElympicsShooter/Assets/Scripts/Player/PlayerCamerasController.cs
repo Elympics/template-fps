@@ -53,12 +53,14 @@ public class PlayerCamerasController : ElympicsMonoBehaviour, IInitializable
 	}
 
 	private void SetUpCamera(bool firstPerson)
-    {
+	{
 		DisableAllCamerasInPlayer();
 		SetCameraAsActive(firstPerson ? firstPersonCamera : thirdPersonCamera);
 
-		brainCameraData.renderPostProcessing = !firstPerson;	// we want only one camera to have enabled rendering at time
-		nonClippingCamera.enabled = firstPerson;				// we want it disabled when in TPP to make first person hands not rendered
+		brainCameraData.renderPostProcessing =
+			!firstPerson; // we want only one camera to have enabled rendering at time
+		nonClippingCamera.enabled =
+			firstPerson; // we want it disabled when in TPP to make first person hands not rendered
 	}
 
 	private void SetCameraAsActive(CMVirtualCameraWithASsignedLayerMask camera)
