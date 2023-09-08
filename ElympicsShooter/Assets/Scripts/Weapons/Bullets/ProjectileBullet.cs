@@ -3,14 +3,14 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class ProjectileBullet : ElympicsMonoBehaviour, IUpdatable, IInitializable
+public class ProjectileBullet : ElympicsMonoBehaviour, IUpdatable
 {
 	[Header("Parameters:")]
 	[SerializeField] protected float speed = 5.0f;
 	[SerializeField] protected float lifeTime = 5.0f;
 	[SerializeField] protected float timeToDestroyOnExplosion = 1.0f;
 
-	[Header("References:")]
+	[Header("References:")] 
 	[SerializeField] private ExplosionArea explosionArea = null;
 	[SerializeField] private GameObject bulletMeshRoot = null;
 	[SerializeField] protected new Rigidbody rigidbody = null;
@@ -18,30 +18,15 @@ public class ProjectileBullet : ElympicsMonoBehaviour, IUpdatable, IInitializabl
 
 	public float LifeTime => lifeTime;
 
-	protected ElympicsBool readyToLaunchExplosion = new ElympicsBool(false);
-
-	protected ElympicsBool colliderEnabled = new ElympicsBool(false);
 	protected ElympicsBool bulletExploded = new ElympicsBool(false);
 
 	private ElympicsGameObject owner = new ElympicsGameObject();
 	private ElympicsFloat deathTimer = new ElympicsFloat(0.0f);
 	private Vector3 direction;
 
-	public void Initialize()
-	{
-		colliderEnabled.ValueChanged += UpdateColliderEnabled;
-
-		readyToLaunchExplosion.ValueChanged += DetonateProjectile;
-	}
-
 	public void SetApplyingDamageCallback(Action weaponAppliedDamage)
 	{
 		explosionArea.SetApplyingDamageCallback(weaponAppliedDamage);
-	}
-
-	private void UpdateColliderEnabled(bool lastValue, bool newValue)
-	{
-		collider.enabled = newValue;
 	}
 
 	public void SetOwner(ElympicsBehaviour owner)
@@ -68,27 +53,26 @@ public class ProjectileBullet : ElympicsMonoBehaviour, IUpdatable, IInitializabl
 	}
 
 	private void OnCollisionEnter(Collision collision)
-    {
-        //TODO: Dirty fix when object is destroyed
-        if (owner.Value == null)
-            return;
+	{
+		if (owner.Value == null)
+			return;
 
-        if (collision.transform.root.gameObject == owner.Value.gameObject)
-            return;
+		if (collision.transform.root.gameObject == owner.Value.gameObject)
+			return;
 
-        ChangeMovementState(false);
+		ChangeMovementState(false);
 
-        readyToLaunchExplosion.Value = true;
-    }
+		TryDetonateProjectile(true);
+	}
 
-    private void ChangeMovementState(bool active)
-    {
-        rigidbody.isKinematic = !active;
-        //rigidbody.useGravity = active; // can be uncommented if you want gravity-dependent projectile
-        colliderEnabled.Value = active;
-    }
+	private void ChangeMovementState(bool active)
+	{
+		rigidbody.isKinematic = !active;
+		//rigidbody.useGravity = active; // can be uncommented if you want gravity-dependent projectile
+		collider.enabled = active;
+	}
 
-    private void DetonateProjectile(bool lastValue, bool newValue)
+	private void TryDetonateProjectile(bool newValue)
 	{
 		if (newValue)
 			LaunchExplosion();
@@ -98,8 +82,8 @@ public class ProjectileBullet : ElympicsMonoBehaviour, IUpdatable, IInitializabl
 	{
 		deathTimer.Value += Elympics.TickDuration;
 
-		if ((!bulletExploded && deathTimer >= lifeTime)
-			|| (bulletExploded && deathTimer >= timeToDestroyOnExplosion))
+		if ((!bulletExploded.Value && deathTimer.Value >= lifeTime)
+		    || (bulletExploded.Value && deathTimer.Value >= timeToDestroyOnExplosion))
 		{
 			DestroyProjectile();
 		}

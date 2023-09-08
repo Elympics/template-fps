@@ -28,10 +28,11 @@ public class LoadoutPanel : MonoBehaviour
 	{
 		var clientPlayer = playersProvider.ClientPlayer;
 
-		clientPlayer.LoadoutController.CurrentEquipedWeaponIndex.ValueChanged += UpdateCurrentEquipedWeaponView;
+		clientPlayer.LoadoutController.CurrentEquippedWeaponIndex.ValueChanged += UpdateCurrentEquipedWeaponView;
 	}
 
-	private void UpdateCurrentEquipedWeaponView(int lastValue, int newValue)
+	private void UpdateCurrentEquipedWeaponView(int lastValue,
+		int newValue)
 	{
 		loadoutWeaponIcons[currentEquipedWeaponIcon].UpdateWeaponView(false);
 

@@ -25,7 +25,8 @@ public class HealthBar : MonoBehaviour
 		clientPlayerData.StatsController.HealthValueChanged += UpdateHealthView;
 	}
 
-	private void UpdateHealthView(float currentHealth, float maxHealth)
+	private void UpdateHealthView(float currentHealth,
+		float maxHealth)
 	{
 		healthCurrentValue.text = Mathf.Round(currentHealth).ToString();
 

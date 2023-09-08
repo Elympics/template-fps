@@ -15,20 +15,14 @@ public class RailGun : Weapon
 
 	private ElympicsFloat currentLoadingTime = new ElympicsFloat(0.0f);
 	private ElympicsBool isLoadingToShot = new ElympicsBool(false);
+	private double previousLoadingTime;
 
 	public event Action<float, float> LoadingTimeChanged;
 	public event Action<RaycastHit> WeaponFired;
 
-	public override void Initialize()
-	{
-		base.Initialize();
-
-		currentLoadingTime.ValueChanged += HandleCurrentLoadingTimeChanged;
-	}
-
 	protected override void ProcessWeaponAction()
 	{
-		if (isLoadingToShot)
+		if (isLoadingToShot.Value)
 			return;
 
 		currentLoadingTime.Value = 0.0f;
@@ -39,26 +33,35 @@ public class RailGun : Weapon
 	{
 		base.ElympicsUpdate();
 
-		if (isLoadingToShot)
+		if (isLoadingToShot.Value)
 		{
 			if (currentLoadingTime.Value >= loadingTime)
 				ChangeCurrentLoadingTime(0.0f);
 			else
 				ChangeCurrentLoadingTime(currentLoadingTime.Value + Elympics.TickDuration);
 		}
+
+		HandleCurrentLoadingTimeChanged(currentLoadingTime.Value);
 	}
 
-	private void HandleCurrentLoadingTimeChanged(float lastValue, float newValue)
+	private void HandleCurrentLoadingTimeChanged(float newValue)
 	{
-		if (lastValue >= loadingTime && newValue < loadingTime)
+		if (previousLoadingTime == newValue)
+			return;
+
+		// Preventing of multiple rays in case of renconciliation
+		if (previousLoadingTime >= loadingTime && newValue < loadingTime)
 			ProcessRayShot();
+
+		previousLoadingTime = newValue;
 	}
 
 	private void ProcessRayShot()
 	{
 		RaycastHit hit;
 
-		if (Physics.Raycast(cinemachinePlayerCamera.transform.position, cinemachinePlayerCamera.transform.forward, out hit, Mathf.Infinity))
+		if (Physics.Raycast(cinemachinePlayerCamera.transform.position, cinemachinePlayerCamera.transform.forward,
+			    out hit, Mathf.Infinity))
 		{
 			if (hit.transform.TryGetComponent<StatsController>(out StatsController statsController))
 			{
@@ -88,6 +91,6 @@ public class RailGun : Weapon
 	private void ChangeCurrentLoadingTime(float newCurrentLoadingTime)
 	{
 		currentLoadingTime.Value = newCurrentLoadingTime;
-		LoadingTimeChanged?.Invoke(currentLoadingTime, loadingTime);
+		LoadingTimeChanged?.Invoke(currentLoadingTime.Value, loadingTime);
 	}
 }

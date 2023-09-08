@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
-public class KillCamController : ElympicsMonoBehaviour, IInitializable
+public class KillCamController : ElympicsMonoBehaviour
 {
 	[Header("References:")]
 	[SerializeField] private DeathController deathController = null;
@@ -14,30 +14,38 @@ public class KillCamController : ElympicsMonoBehaviour, IInitializable
 	[SerializeField] private PlayerData playerData = null;
 	[SerializeField] private CinemachineVirtualCamera thirdPersonCamera = null;
 
-	public void Initialize()
+	private void Awake()
 	{
-		if (Elympics.IsClient && (int)Elympics.Player == playerData.PlayerId)
-		{
-			deathController.IsDead.ValueChanged += SetKillCamIsActive;
-			deathController.KillerId.ValueChanged += SetupInfoAboutKiller;
-		}
+		deathController.HasBeenKilled += (victimId,
+			killerId) => SetupKillCamProperties();
 	}
 
-	private void SetupInfoAboutKiller(int lastValue, int newValue)
+	private void SetupInfoAboutKiller(int value)
 	{
-		if (newValue < 0)
+		if (value < 0)
 			return;
 
-		var killerGameObject = playersProvider.GetPlayerById(newValue);
+		var killerGameObject = playersProvider.GetPlayerById(value);
 
 		thirdPersonCamera.LookAt = killerGameObject.transform;
 	}
 
-	private void SetKillCamIsActive(bool lastValue, bool newValue)
+	private void SetKillCamIsActive(bool value)
 	{
-		if (newValue)
+		if (value)
 			playerCamerasController.SetThirdPersonCameraAsActive();
 		else
 			playerCamerasController.SetDefaultCameraAsActive();
+	}
+
+
+	[ElympicsRpc(ElympicsRpcDirection.ServerToPlayers)]
+	private void SetupKillCamProperties()
+	{
+		if ((int)Elympics.Player != playerData.PlayerId)
+			return;
+
+		SetKillCamIsActive(deathController.IsDead.Value);
+		SetupInfoAboutKiller(deathController.KillerId.Value);
 	}
 }

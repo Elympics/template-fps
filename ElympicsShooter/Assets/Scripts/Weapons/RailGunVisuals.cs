@@ -17,7 +17,8 @@ public class RailGunVisuals : ElympicsMonoBehaviour, IInitializable
 	[Header("Parameters:")]
 	[SerializeField] private float trailLifetime = 0.5f;
 
-	private ElympicsArray<ElympicsVector3> railRenderPoints = new ElympicsArray<ElympicsVector3>(new ElympicsVector3[] { new ElympicsVector3(), new ElympicsVector3()});
+	private ElympicsArray<ElympicsVector3> railRenderPoints =
+		new ElympicsArray<ElympicsVector3>(new ElympicsVector3[] { new ElympicsVector3(), new ElympicsVector3() });
 
 	private Coroutine trailDeathTimerCoroutine = null;
 	private LaserVisuals laserVisuals = null;
@@ -45,9 +46,10 @@ public class RailGunVisuals : ElympicsMonoBehaviour, IInitializable
 		}
 	}
 
-	private void UpdateLaserPoints(Vector3 lastValue, Vector3 newValue)
+	private void UpdateLaserPoints(Vector3 lastValue,
+		Vector3 newValue)
 	{
-		laserVisuals.SetPoints(railRenderPoints.Values[0], railRenderPoints.Values[1]);
+		laserVisuals.SetPoints(railRenderPoints.Values[0].Value, railRenderPoints.Values[1].Value);
 
 		CastRay();
 	}
@@ -62,7 +64,8 @@ public class RailGunVisuals : ElympicsMonoBehaviour, IInitializable
 		}
 		else
 		{
-			railRenderPoints.Values[1].Value = cinemachinePlayerCamera.transform.position + (cinemachinePlayerCamera.transform.forward * 100.0f);
+			railRenderPoints.Values[1].Value = cinemachinePlayerCamera.transform.position +
+			                                   (cinemachinePlayerCamera.transform.forward * 100.0f);
 		}
 
 		CastRay();
@@ -78,7 +81,8 @@ public class RailGunVisuals : ElympicsMonoBehaviour, IInitializable
 		trailDeathTimerCoroutine = StartCoroutine(TrailDeathTimer());
 	}
 
-	private void ProcessLoadingTimeChanged(float currentLoadingValue, float maxLoadingValue)
+	private void ProcessLoadingTimeChanged(float currentLoadingValue,
+		float maxLoadingValue)
 	{
 		var fillAmountvalue = currentLoadingValue / maxLoadingValue;
 

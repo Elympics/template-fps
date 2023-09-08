@@ -10,7 +10,7 @@ public class GameInitializer : ElympicsMonoBehaviour, IUpdatable
 	[SerializeField] private float timeToStartMatch = 5.0f;
 
 	public ElympicsFloat CurrentTimeToStartMatch { get; } = new ElympicsFloat(0.0f);
-	
+
 	private ElympicsBool gameInitializationEnabled = new ElympicsBool(false);
 
 	private Action OnMatchInitializedAssignedCallback = null;
@@ -25,11 +25,11 @@ public class GameInitializer : ElympicsMonoBehaviour, IUpdatable
 
 	public void ElympicsUpdate()
 	{
-		if (gameInitializationEnabled)
+		if (gameInitializationEnabled.Value)
 		{
 			CurrentTimeToStartMatch.Value -= Elympics.TickDuration;
 
-			if (CurrentTimeToStartMatch < 0.0f)
+			if (CurrentTimeToStartMatch.Value < 0.0f)
 			{
 				OnMatchInitializedAssignedCallback?.Invoke();
 

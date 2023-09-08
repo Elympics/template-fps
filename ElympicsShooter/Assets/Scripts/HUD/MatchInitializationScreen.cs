@@ -21,18 +21,21 @@ public class MatchInitializationScreen : MonoBehaviour
 		ProcessScreenViewAtStartOfTheGame();
 	}
 
-	private void UpdateTimeToStartMatchDisplay(float lastValue, float newValue)
+	private void UpdateTimeToStartMatchDisplay(float lastValue,
+		float newValue)
 	{
 		countdownToStartMatchText.text = Mathf.Ceil(newValue).ToString();
 	}
 
 	private void ProcessScreenViewAtStartOfTheGame()
 	{
-		SetScreenDisplayBasedOnCurrentGameState(gameStateController.CurrentGameState, gameStateController.CurrentGameState);
+		SetScreenDisplayBasedOnCurrentGameState(gameStateController.CurrentGameState.Value,
+			gameStateController.CurrentGameState.Value);
 		gameStateController.CurrentGameState.ValueChanged += SetScreenDisplayBasedOnCurrentGameState;
 	}
 
-	private void SetScreenDisplayBasedOnCurrentGameState(int lastGameState, int newGameState)
+	private void SetScreenDisplayBasedOnCurrentGameState(int lastGameState,
+		int newGameState)
 	{
 		screenCanvasGroup.alpha = (GameState)newGameState == GameState.Prematch ? 1.0f : 0.0f;
 	}

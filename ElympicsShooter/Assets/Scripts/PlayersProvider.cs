@@ -37,8 +37,6 @@ public class PlayersProvider : ElympicsMonoBehaviour, IInitializable
 			}
 		}
 
-		//Fix for server side.
-		//TODO: Disable HUD on server
 		ClientPlayer = AllPlayersInScene[0];
 	}
 

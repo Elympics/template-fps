@@ -19,7 +19,7 @@ public class PlayerFirstPersonAnimatorWeaponsController : MonoBehaviour
 
 	private void Awake()
 	{
-		loadoutController.CurrentEquipedWeaponIndex.ValueChanged += OnWeaponSwap;
+		loadoutController.CurrentEquippedWeaponIndex.ValueChanged += OnWeaponSwap;
 
 		var weaponsAssignedToCharacter = this.transform.root.GetComponentsInChildren<Weapon>(true);
 		foreach (Weapon weaponAssignedToCharacter in weaponsAssignedToCharacter)
@@ -31,7 +31,8 @@ public class PlayerFirstPersonAnimatorWeaponsController : MonoBehaviour
 		handsRootAnimator.SetTrigger(WeaponShotTrigger);
 	}
 
-	private void OnWeaponSwap(int lastValue, int newValue)
+	private void OnWeaponSwap(int lastValue,
+		int newValue)
 	{
 		handsRootAnimator.SetTrigger(SwapWeaponTrigger);
 		playerHandsAnimator.SetInteger(ActiveWeaponIndex, newValue);

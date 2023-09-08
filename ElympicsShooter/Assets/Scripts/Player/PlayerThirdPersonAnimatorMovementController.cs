@@ -27,7 +27,8 @@ public class PlayerThirdPersonAnimatorMovementController : MonoBehaviour
 		playerDeathController.IsDead.ValueChanged += ProcessDeathState;
 	}
 
-	private void ProcessDeathState(bool lastValue, bool newValue)
+	private void ProcessDeathState(bool lastValue,
+		bool newValue)
 	{
 		if (newValue)
 		{
@@ -51,7 +52,8 @@ public class PlayerThirdPersonAnimatorMovementController : MonoBehaviour
 
 	private void ProcessMovementValues(Vector3 movementDirection)
 	{
-		var localMovementDirection = playerMovementController.transform.InverseTransformDirection(movementDirection) * 2.0f;
+		var localMovementDirection =
+			playerMovementController.transform.InverseTransformDirection(movementDirection) * 2.0f;
 
 		thirdPersonAnimator.SetFloat(movementForwardParameterHash, localMovementDirection.z);
 		thirdPersonAnimator.SetFloat(movementRightParameterHash, localMovementDirection.x);

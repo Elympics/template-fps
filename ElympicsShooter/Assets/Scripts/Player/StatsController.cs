@@ -28,9 +28,10 @@ public class StatsController : ElympicsMonoBehaviour, IInitializable
 		health.Value = maxHealth;
 	}
 
-	public void ChangeHealth(float value, int damageOwner)
+	public void ChangeHealth(float value,
+		int damageOwner)
 	{
-		if (!Elympics.IsServer || deathController.IsDead)
+		if (!Elympics.IsServer || deathController.IsDead.Value)
 			return;
 
 		health.Value += value;
@@ -39,7 +40,8 @@ public class StatsController : ElympicsMonoBehaviour, IInitializable
 			deathController.ProcessPlayersDeath(damageOwner);
 	}
 
-	private void OnHealthValueChanged(float lastValue, float newValue)
+	private void OnHealthValueChanged(float lastValue,
+		float newValue)
 	{
 		HealthValueChanged?.Invoke(newValue, maxHealth);
 	}
