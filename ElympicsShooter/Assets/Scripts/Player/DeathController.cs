@@ -52,7 +52,11 @@ public class DeathController : ElympicsMonoBehaviour, IUpdatable, IInitializable
             collider.enabled = !value;
         }
 
+        if (!Elympics.IsServer)
+            return;
+
         SetRagdollState(value);
+        RpcSetRagdollState(value);
     }
 
     public void ProcessPlayersDeath(int damageOwner)
@@ -111,5 +115,11 @@ public class DeathController : ElympicsMonoBehaviour, IUpdatable, IInitializable
         }
 
         animator.enabled = !state;
+    }
+
+    [ElympicsRpc(ElympicsRpcDirection.ServerToPlayers)]
+    private void RpcSetRagdollState(bool state)
+    {
+        SetRagdollState(state);
     }
 }

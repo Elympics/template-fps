@@ -1,6 +1,9 @@
-using Cinemachine;
 using Elympics;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class KillCamController : ElympicsMonoBehaviour
 {
@@ -13,8 +16,8 @@ public class KillCamController : ElympicsMonoBehaviour
 
     private void Awake()
     {
-        deathController.HasBeenKilled += (victimId,
-            killerId) => SetupKillCamProperties();
+        deathController.PlayerRespawned += SetupKillCamProperties;
+        deathController.HasBeenKilled += (victimId, killerId) => SetupKillCamProperties();
     }
 
     private void SetupInfoAboutKiller(int value)
@@ -43,6 +46,8 @@ public class KillCamController : ElympicsMonoBehaviour
             return;
 
         SetKillCamIsActive(deathController.IsDead.Value);
-        SetupInfoAboutKiller(deathController.KillerId.Value);
+
+        if (deathController.IsDead.Value)
+            SetupInfoAboutKiller(deathController.KillerId.Value);
     }
 }
