@@ -1,40 +1,37 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 
 public class CursorController : MonoBehaviour
 {
-	[SerializeField] private GameStateController gameStateController = null;
+    [SerializeField] private GameStateController gameStateController = null;
 
-	private void Awake()
-	{
-		SetCursorLock(true);
+    private void Awake()
+    {
+        SetCursorLock(true);
 
-		gameStateController.CurrentGameState.ValueChanged += SetCursorLockBasedOnCurrentGameState;
-	}
+        gameStateController.CurrentGameState.ValueChanged += SetCursorLockBasedOnCurrentGameState;
+    }
 
-	private void SetCursorLockBasedOnCurrentGameState(int lastValue,
-		int newValue)
-	{
-		bool cursorLockState = (GameState)newValue != GameState.MatchEnded;
+    private void SetCursorLockBasedOnCurrentGameState(int lastValue,
+        int newValue)
+    {
+        bool cursorLockState = (GameState)newValue != GameState.MatchEnded;
 
-		SetCursorLock(cursorLockState);
-	}
+        SetCursorLock(cursorLockState);
+    }
 
-	[UsedImplicitly]
-	public void SetCursorLock(bool cursorLock)
-	{
-		if (cursorLock)
-		{
-			Cursor.lockState = CursorLockMode.Locked;
-			Cursor.visible = false;
-		}
-		else
-		{
-			Cursor.lockState = CursorLockMode.None;
-			Cursor.visible = true;
-		}
-	}
+    [UsedImplicitly]
+    public void SetCursorLock(bool cursorLock)
+    {
+        if (cursorLock)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
 }

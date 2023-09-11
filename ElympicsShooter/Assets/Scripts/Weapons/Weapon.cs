@@ -4,62 +4,62 @@ using UnityEngine;
 
 public abstract class Weapon : ElympicsMonoBehaviour, IInitializable, IUpdatable
 {
-	[SerializeField] protected float damage = 0.0f;
-	[SerializeField] [Tooltip("Shots per minute")] protected float fireRate = 60.0f;
-	[SerializeField] private GameObject meshContainer = null;
+    [SerializeField] protected float damage = 0.0f;
+    [SerializeField] [Tooltip("Shots per minute")] protected float fireRate = 60.0f;
+    [SerializeField] private GameObject meshContainer = null;
 
-	public Action WeaponShot = null;
-	public Action WeaponAppliedDamage = null;
+    public Action WeaponShot = null;
+    public Action WeaponAppliedDamage = null;
 
-	protected ElympicsFloat currentTimeBetweenShoots = new ElympicsFloat();
+    protected ElympicsFloat currentTimeBetweenShoots = new ElympicsFloat();
 
-	protected float timeBetweenShoots = 0.0f;
-	public float TimeBetweenShoots => timeBetweenShoots;
+    protected float timeBetweenShoots = 0.0f;
+    public float TimeBetweenShoots => timeBetweenShoots;
 
-	protected bool IsReady => currentTimeBetweenShoots.Value >= timeBetweenShoots;
+    protected bool IsReady => currentTimeBetweenShoots.Value >= timeBetweenShoots;
 
-	public GameObject Owner => this.transform.root.gameObject;
+    public GameObject Owner => this.transform.root.gameObject;
 
-	public virtual void Initialize()
-	{
-		CalculateTimeBetweenShoots();
-	}
+    public virtual void Initialize()
+    {
+        CalculateTimeBetweenShoots();
+    }
 
-	public void CalculateTimeBetweenShoots()
-	{
-		if (fireRate > 0)
-			timeBetweenShoots = 60.0f / fireRate;
-		else
-			timeBetweenShoots = 0.0f;
-	}
+    public void CalculateTimeBetweenShoots()
+    {
+        if (fireRate > 0)
+            timeBetweenShoots = 60.0f / fireRate;
+        else
+            timeBetweenShoots = 0.0f;
+    }
 
-	public void ExecutePrimaryAction()
-	{
-		ExecuteWeaponActionIfReady();
-	}
+    public void ExecutePrimaryAction()
+    {
+        ExecuteWeaponActionIfReady();
+    }
 
-	private void ExecuteWeaponActionIfReady()
-	{
-		if (IsReady)
-		{
-			ProcessWeaponAction();
+    private void ExecuteWeaponActionIfReady()
+    {
+        if (IsReady)
+        {
+            ProcessWeaponAction();
 
-			currentTimeBetweenShoots.Value = 0.0f;
-		}
-	}
+            currentTimeBetweenShoots.Value = 0.0f;
+        }
+    }
 
-	protected abstract void ProcessWeaponAction();
+    protected abstract void ProcessWeaponAction();
 
-	public virtual void SetIsActive(bool isActive)
-	{
-		meshContainer.SetActive(isActive);
-	}
+    public virtual void SetIsActive(bool isActive)
+    {
+        meshContainer.SetActive(isActive);
+    }
 
-	public virtual void ElympicsUpdate()
-	{
-		if (!IsReady)
-		{
-			currentTimeBetweenShoots.Value += Elympics.TickDuration;
-		}
-	}
+    public virtual void ElympicsUpdate()
+    {
+        if (!IsReady)
+        {
+            currentTimeBetweenShoots.Value += Elympics.TickDuration;
+        }
+    }
 }

@@ -1,5 +1,5 @@
 public enum VirtualCamPriority
 {
-	Disabled = 0,
-	Active = 10
+    Disabled = 0,
+    Active = 10
 }
