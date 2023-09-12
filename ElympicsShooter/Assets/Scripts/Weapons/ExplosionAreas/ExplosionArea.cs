@@ -1,78 +1,76 @@
 using Elympics;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ExplosionArea : ElympicsMonoBehaviour
 {
-	[Header("Parameters:")]
-	[SerializeField] private float explosionDamage = 10.0f;
-	[SerializeField] private float explosionRange = 2.0f;
- 
-	[Header("References:")]
-	[SerializeField] private ParticleSystem explosionPS = null;
-	[SerializeField] private ElympicsMonoBehaviour bulletOwner = null;
+    [Header("Parameters:")]
+    [SerializeField] private float explosionDamage = 10.0f;
+    [SerializeField] private float explosionRange = 2.0f;
 
-	private Action weaponAppliedDamageCallback = null;
+    [Header("References:")]
+    [SerializeField] private ParticleSystem explosionPS = null;
+    [SerializeField] private ElympicsMonoBehaviour bulletOwner = null;
 
-	public void Detonate()
-	{
-		DetectTargetsInExplosionRange();
+    private Action weaponAppliedDamageCallback = null;
 
-		explosionPS.Play();
-	}
+    public void Detonate()
+    {
+        DetectTargetsInExplosionRange();
 
-	public void SetApplyingDamageCallback(Action weaponAppliedDamage)
-	{
-		weaponAppliedDamageCallback = weaponAppliedDamage;
-	}
+        explosionPS.Play();
+    }
 
-	private void DetectTargetsInExplosionRange()
-	{
-		Collider[] objectsInExplosionRange = Physics.OverlapSphere(this.transform.position, explosionRange);
-		bool damageApplied = false;
+    public void SetApplyingDamageCallback(Action weaponAppliedDamage)
+    {
+        weaponAppliedDamageCallback = weaponAppliedDamage;
+    }
 
-		foreach (Collider objectInExplosionRange in objectsInExplosionRange)
-		{
-			if (TargetIsNotBehindObstacle(objectInExplosionRange.gameObject))
-				damageApplied |= TryToApplyDamageToTarget(objectInExplosionRange.gameObject);
-		}
+    private void DetectTargetsInExplosionRange()
+    {
+        Collider[] objectsInExplosionRange = Physics.OverlapSphere(this.transform.position, explosionRange);
+        bool damageApplied = false;
 
-		if (damageApplied)
-			weaponAppliedDamageCallback?.Invoke();
-	}
+        foreach (Collider objectInExplosionRange in objectsInExplosionRange)
+        {
+            if (TargetIsNotBehindObstacle(objectInExplosionRange.gameObject))
+                damageApplied |= TryToApplyDamageToTarget(objectInExplosionRange.gameObject);
+        }
 
-	private bool TryToApplyDamageToTarget(GameObject objectInExplosionRange)
-	{
-		if (objectInExplosionRange.TryGetComponent<StatsController>(out StatsController targetStatsController))
-		{
-			//TODO: Add damage modification depending on distance from explosion center
-			targetStatsController.ChangeHealth(-explosionDamage, (int)bulletOwner.PredictableFor);
-			return true;
-		}
+        if (damageApplied)
+            weaponAppliedDamageCallback?.Invoke();
+    }
 
-		return false;
-	}
+    private bool TryToApplyDamageToTarget(GameObject objectInExplosionRange)
+    {
+        if (objectInExplosionRange.TryGetComponent<StatsController>(out StatsController targetStatsController))
+        {
+            //TODO: Add damage modification depending on distance from explosion center
+            targetStatsController.ChangeHealth(-explosionDamage, (int)bulletOwner.PredictableFor);
+            return true;
+        }
 
-	private bool TargetIsNotBehindObstacle(GameObject objectInExplosionRange)
-	{
-		var directionToObjectInExplosionRange =
-			(objectInExplosionRange.transform.position - this.transform.position).normalized;
+        return false;
+    }
 
-		if (Physics.Raycast(this.transform.position, directionToObjectInExplosionRange, out RaycastHit hit,
-			    explosionRange))
-		{
-			Debug.Log("I hit " + hit.transform.gameObject.name);
-			return hit.transform.gameObject == objectInExplosionRange;
-		}
+    private bool TargetIsNotBehindObstacle(GameObject objectInExplosionRange)
+    {
+        var directionToObjectInExplosionRange =
+            (objectInExplosionRange.transform.position - this.transform.position).normalized;
 
-		return false;
-	}
+        if (Physics.Raycast(this.transform.position, directionToObjectInExplosionRange, out RaycastHit hit,
+                explosionRange))
+        {
+            Debug.Log("I hit " + hit.transform.gameObject.name);
+            return hit.transform.gameObject == objectInExplosionRange;
+        }
 
-	private void OnDrawGizmosSelected()
-	{
-		Gizmos.color = Color.red;
-		Gizmos.DrawWireSphere(this.transform.position, explosionRange);
-	}
+        return false;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(this.transform.position, explosionRange);
+    }
 }

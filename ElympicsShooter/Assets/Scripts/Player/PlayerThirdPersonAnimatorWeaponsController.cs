@@ -1,33 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerThirdPersonAnimatorWeaponsController : MonoBehaviour
 {
-	[Header("References:")]
-	[SerializeField] private Animator thirdPersonAnimator = null;
-	[SerializeField] private LoadoutController loadoutController = null;
-	[SerializeField] private GameObject[] assignedWeapons = null;
+    [Header("References:")]
+    [SerializeField] private Animator thirdPersonAnimator = null;
+    [SerializeField] private LoadoutController loadoutController = null;
+    [SerializeField] private GameObject[] assignedWeapons = null;
 
-	private readonly int SwapWeaponTrigger = Animator.StringToHash("WeaponInitializeTrigger");
+    private readonly int SwapWeaponTrigger = Animator.StringToHash("WeaponInitializeTrigger");
 
-	private GameObject currentActiveAssignedWeapon = null;
+    private GameObject currentActiveAssignedWeapon = null;
 
-	private void Awake()
-	{
-		currentActiveAssignedWeapon = assignedWeapons[0];
+    private void Awake()
+    {
+        currentActiveAssignedWeapon = assignedWeapons[0];
 
-		loadoutController.CurrentEquippedWeaponIndex.ValueChanged += OnWeaponSwap;
-	}
+        loadoutController.CurrentEquippedWeaponIndex.ValueChanged += OnWeaponSwap;
+    }
 
-	private void OnWeaponSwap(int lastValue,
-		int newValue)
-	{
-		currentActiveAssignedWeapon.SetActive(false);
+    private void OnWeaponSwap(int lastValue,
+        int newValue)
+    {
+        currentActiveAssignedWeapon.SetActive(false);
 
-		thirdPersonAnimator.SetTrigger(SwapWeaponTrigger);
+        thirdPersonAnimator.SetTrigger(SwapWeaponTrigger);
 
-		currentActiveAssignedWeapon = assignedWeapons[newValue];
-		currentActiveAssignedWeapon.SetActive(true);
-	}
+        currentActiveAssignedWeapon = assignedWeapons[newValue];
+        currentActiveAssignedWeapon.SetActive(true);
+    }
 }

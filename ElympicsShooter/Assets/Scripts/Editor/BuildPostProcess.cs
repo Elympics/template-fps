@@ -1,8 +1,4 @@
-﻿using UnityEditor.Callbacks;
-using UnityEditor;
-using System.IO;
-using UnityEngine;
-
+﻿
 #if UNITY_IOS
 using UnityEditor.iOS.Xcode;
 
